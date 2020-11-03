@@ -1,14 +1,18 @@
 package com.swufe.diary_test;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -60,13 +64,37 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+
         if (view.getId() == R.id.btn_delete) {
-            deleteData(id);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            //deleteData(id);
+            //startActivity(new Intent(this, MainActivity.class));
+           // finish();
+            new AlertDialog.Builder(this).setTitle("确认删除吗？")
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 点击“确认”后的操作
+                            deleteData(id);
+
+
+                        }
+                    })
+                    .setNegativeButton("我再想想", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // 点击“返回”后的操作,这里不设置没有任何操作
+                        }
+                    }).show();
+            // super.onBackPressed();
+
         }
 
     }
+
+
 
     private void queryTitle() {
         Cursor cursor1= mDatabase.rawQuery("select count(2) from "+DBHelper.TABLE_NAME,null);
@@ -87,6 +115,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private void deleteData(int id) {
         mDatabase.delete(DBHelper.TABLE_NAME,"id = ?",new String[]{id+""});
+
+
     }
+
 
 }

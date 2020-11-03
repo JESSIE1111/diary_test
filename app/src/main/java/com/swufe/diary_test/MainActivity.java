@@ -40,13 +40,19 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action",
-                        Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action",
+                  //      Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(MainActivity.this,AddActivity.class);
+                intent.putExtras(bundle);
+                finish();
+                startActivity(intent);
             }
         });
         mDatabase = new DBHelper(this).getWritableDatabase();
         queryTitle();
         initEvent();
+
     }
 
     public void initEvent(){
@@ -75,11 +81,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+   /* @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
     private void queryTitle() {
         Cursor cursor1= mDatabase.rawQuery("select count(2) from "+DBHelper.TABLE_NAME,null);
